@@ -7,8 +7,8 @@ app = FastAPI()
 security = HTTPBasic()
 
 
-CLIENT_KEY = "9FvQ3KxA7M2pR5WcLZ8HnE4TBydU"
-SECRET_KEY = "S3cr3t!@#A9xPqL7D2MZK8W$R4EJHfYtC"
+CLIENT_KEY = "dckey_EHldkoRCUGXGtPDc5ufEArLuoJvxoroM"
+SECRET_KEY = "dskey_RyK-Y5-z4oz_Ju_QhAHDOsA_W7bm7ejd"
 
 
 mongo = MongoClient("mongodb://localhost:27017")
@@ -17,8 +17,13 @@ collection = db["ipos_feed_log"]
 
 
 def check_auth(credentials: HTTPBasicCredentials = Depends(security)):
-    if credentials.username != CLIENT_KEY or credentials.password != SECRET_KEY:
+    username = credentials.username.strip()
+    password = credentials.password.strip()
+
+    if username != CLIENT_KEY or password != SECRET_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return True
 
 
 @app.post("/ipos/feeds/webhook")
